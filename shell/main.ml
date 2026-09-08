@@ -1,5 +1,22 @@
 open Fiel_bot.Game
 
-let () = print_endline (describe OnSale)
+let cpb26 = {
+    home = "Corinthians";
+    away = "Pinheiros";
+    kickoff = "08/09/2026 20:00";
+    venue = "Ginásio Wlamir Marques";
+    status = OnSale;
+}
 
-let () = print_endline(string_of_bool (should_notify OnSale))
+let cl26 = {
+    home = "Corinthians";
+    away = "Estudiantes";
+    kickoff = "16/09/2026 21:30";
+    venue = "Neo Química Arena";
+    status = ComingSoon;
+}
+
+let cpb26_onsale = { cpb26 with status = OnSale }
+
+let () = 
+    print_endline( string_of_bool (is_buyable cpb26) );
