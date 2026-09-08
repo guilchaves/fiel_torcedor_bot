@@ -30,3 +30,22 @@ let is_buyable g =
     match g.status with
     | OnSale -> true
     | _ -> false
+
+let availability_of_label label =
+    match label with
+    | "Disponível para: Público Geral" -> Some OnSale
+    | "Disponível em breve" -> Some ComingSoon
+    | "Esgotado" -> Some SoldOut
+    | _ -> None
+
+let show label =
+    match availability_of_label label with
+    | Some a -> describe a
+    | None -> "unrecognised status: " ^ label
+
+let label_is_buyable s =
+    match availability_of_label s with
+    | Some OnSale -> true
+    | Some ComingSoon -> false
+    | Some SoldOut -> false
+    | None -> false

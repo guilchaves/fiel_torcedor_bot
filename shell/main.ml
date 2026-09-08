@@ -18,5 +18,5 @@ let cl26 = {
 
 let cpb26_onsale = { cpb26 with status = OnSale }
 
-let () = 
-    print_endline( string_of_bool (is_buyable cpb26) );
+let () = print_endline (
+    string_of_bool (label_is_buyable "Disponível para: ") )
