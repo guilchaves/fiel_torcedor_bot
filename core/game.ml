@@ -49,3 +49,15 @@ let label_is_buyable s =
     | Some ComingSoon -> false
     | Some SoldOut -> false
     | None -> false
+
+let buyable_summaries games =
+    games
+    |> List.filter is_buyable
+    |> List.map summary
+
+let buyable_count games =
+    games
+    |> buyable_summaries 
+    |> List.length
+
+

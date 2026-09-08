@@ -16,7 +16,13 @@ let cl26 = {
     status = ComingSoon;
 }
 
-let cpb26_onsale = { cpb26 with status = OnSale }
+let games = [
+    {home="Corinthians"; away="Pinheiros"; kickoff="08/09"; venue="Ginásio Wlamir Marques"; status=OnSale};
+    {home="Corinthians"; away="Estudiantes"; kickoff="16/09"; venue="Neo Química Arena"; status=OnSale};
+    {home="Corinthians"; away="Flamengo"; kickoff="20/09"; venue="Maracanã"; status=ComingSoon};
+]
 
-let () = print_endline (
-    string_of_bool (label_is_buyable "Disponível para: ") )
+let () = games |> buyable_summaries |> List.iter print_endline
+let () = print_endline (string_of_int(games |> buyable_count))
+
+let () = games |> List.iter (fun g -> print_endline (g.away))
