@@ -23,6 +23,7 @@ let summary g =
   g.title ^ " — " ^ g.kickoff ^ " at " ^ g.venue ^ " | " ^ g.competition ^ " ("
   ^ describe g.status ^ ")"
 
+let game_id g = g.title ^ " | " ^ g.kickoff
 let is_buyable g = match g.status with OnSale -> true | _ -> false
 
 let availability_of_label label =
@@ -74,3 +75,14 @@ let parse_games html =
   Soup.parse html $$ "article.tab_event" |> to_list |> List.map parse_card
 
 let next_buyable games = List.find_opt is_buyable games
+
+let new_buyable ~seen games =
+  games |> List.filter is_buyable
+  |> List.filter (fun g -> not (List.mem (game_id g) seen))
+
+let alert_message games =
+  let lines = buyable_summaries games in
+  match lines with
+  | [] -> None
+  | _ ->
+      Some ("Ingressos à venda no Fiel Torcedor!\n\n" ^ String.concat "\n" lines)
