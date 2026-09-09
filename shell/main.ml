@@ -26,3 +26,11 @@ let () = games |> buyable_summaries |> List.iter print_endline
 let () = print_endline (string_of_int(games |> buyable_count))
 
 let () = games |> List.iter (fun g -> print_endline (g.away))
+
+let () =
+    let html =
+        In_channel.with_open_text "samples/fieltorcedor.html" In_channel.input_all
+    in 
+    html |> match_titles |> List.iter print_endline
+
+

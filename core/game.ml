@@ -1,3 +1,5 @@
+open Soup 
+
 type availability = 
     | OnSale
     | ComingSoon
@@ -60,4 +62,15 @@ let buyable_count games =
     |> buyable_summaries 
     |> List.length
 
+
+let text_of node = String.concat " " (Soup.trimmed_texts node)
+
+let match_titles html =
+    Soup.parse html
+    $$ "article.tab_event"
+    |> to_list
+    |> List.map (fun card ->
+            match card $? "h2" with 
+            | Some h2 -> text_of h2
+            | None -> "(sem titulo)")
 

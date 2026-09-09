@@ -1,2 +1,3 @@
 (library
- (name fiel_bot))
+ (name fiel_bot)
+ (libraries lambdasoup))
