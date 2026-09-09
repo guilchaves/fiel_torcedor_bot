@@ -1,4 +1,4 @@
 (executable
  (public_name fiel_bot)
  (name main)
- (libraries fiel_bot ezcurl))
+ (libraries fiel_bot ezcurl yojson))
