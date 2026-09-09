@@ -1,6 +1,6 @@
 open Fiel_bot.Game
 
-let site_url = "https://www.fieltorcedor.com.br/"
+let site_url = base_url ^ "/"
 let state_file = "seen.txt"
 
 let read_seen () =

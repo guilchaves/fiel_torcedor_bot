@@ -8,20 +8,24 @@ type game = {
   venue : string;
   status : availability;
   competition : string;
+  link : string option;
 }
+
+let base_url = "https://www.fieltorcedor.com.br"
 
 let describe a =
   match a with
-  | OnSale -> "This item is currently on sale."
-  | ComingSoon -> "This item will be available."
-  | SoldOut -> "This item is currently sold out."
+  | OnSale -> "Compre aqui:"
+  | ComingSoon -> "Disponível em breve."
+  | SoldOut -> "Esgotado."
 
 let should_notify a =
   match a with OnSale -> true | ComingSoon -> true | SoldOut -> false
 
 let summary g =
   g.title ^ " — " ^ g.kickoff ^ " at " ^ g.venue ^ " | " ^ g.competition ^ " ("
-  ^ describe g.status ^ ")"
+  ^ describe g.status
+  ^ match g.link with Some l -> l | None -> "" ^ ")"
 
 let game_id g = g.title ^ " | " ^ g.kickoff
 let is_buyable g = match g.status with OnSale -> true | _ -> false
@@ -62,6 +66,14 @@ let pick card sel =
 let card_status card =
   match card $? "button" with Some _ -> OnSale | None -> ComingSoon
 
+let make_absolute href =
+  if String.length href > 0 && href.[0] = '/' then base_url ^ href else href
+
+let card_link card =
+  match card $? "a" with
+  | None -> None
+  | Some a -> Soup.attribute "href" a |> Option.map make_absolute
+
 let parse_card card =
   {
     title = pick card "h2";
@@ -69,6 +81,7 @@ let parse_card card =
     venue = pick card "p.font16";
     status = card_status card;
     competition = pick card "p.font18";
+    link = card_link card;
   }
 
 let parse_games html =
