@@ -1,36 +1,15 @@
 open Fiel_bot.Game
 
-let cpb26 = {
-    home = "Corinthians";
-    away = "Pinheiros";
-    kickoff = "08/09/2026 20:00";
-    venue = "Ginásio Wlamir Marques";
-    status = OnSale;
-}
-
-let cl26 = {
-    home = "Corinthians";
-    away = "Estudiantes";
-    kickoff = "16/09/2026 21:30";
-    venue = "Neo Química Arena";
-    status = ComingSoon;
-}
-
-let games = [
-    {home="Corinthians"; away="Pinheiros"; kickoff="08/09"; venue="Ginásio Wlamir Marques"; status=OnSale};
-    {home="Corinthians"; away="Estudiantes"; kickoff="16/09"; venue="Neo Química Arena"; status=OnSale};
-    {home="Corinthians"; away="Flamengo"; kickoff="20/09"; venue="Maracanã"; status=ComingSoon};
-]
-
-let () = games |> buyable_summaries |> List.iter print_endline
-let () = print_endline (string_of_int(games |> buyable_count))
-
-let () = games |> List.iter (fun g -> print_endline (g.away))
-
 let () =
-    let html =
-        In_channel.with_open_text "samples/fieltorcedor.html" In_channel.input_all
-    in 
-    html |> match_titles |> List.iter print_endline
-
-
+  let html =
+    In_channel.with_open_text "samples/fieltorcedor.html" In_channel.input_all
+  in
+  let games = parse_games html in
+  print_endline "-- all matches --";
+  games |> List.iter (fun g -> print_endline (summary g));
+  print_endline "-- buyable matches --";
+  games |> buyable_summaries |> List.iter print_endline;
+  print_endline "-- next buyable match --";
+  match next_buyable games with
+  | Some g -> print_endline ("next buyable: " ^ summary g)
+  | None -> print_endline "nothing on sale right now"
